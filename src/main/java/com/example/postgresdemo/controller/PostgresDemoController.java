@@ -38,7 +38,10 @@ public class PostgresDemoController {
 	
 	//------------------------------MEMBER SECTION-------------------------------
 	//Save Member
-	@RequestMapping(path = "/member/new/add", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(path = "/member/new/add", 
+			method = RequestMethod.POST, 
+			produces = MediaType.APPLICATION_JSON_VALUE, 
+			consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> saveMember(@RequestBody RequestMemberModel reqMember) {
 		ResponseMessage response = new ResponseMessage();
 		try {
@@ -63,7 +66,10 @@ public class PostgresDemoController {
 		}
 	}
 	//Get All Member
-	@RequestMapping(path = "/member/all", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(path = "/member/all", 
+			method = RequestMethod.POST, 
+			produces = MediaType.APPLICATION_JSON_VALUE, 
+			consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getAllMember() {
 		try {
 			 List<MemberModel> members = memberService.findAllMember();
@@ -75,9 +81,11 @@ public class PostgresDemoController {
 			return new ResponseEntity<ResponseMessage>(response, HttpStatus.CONFLICT);
 		}
 	}
-	
 	//Get Member by ID
-	@RequestMapping(path = "/member/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(path = "/member/{id}", 
+			method = RequestMethod.GET, 
+			produces = MediaType.APPLICATION_JSON_VALUE, 
+			consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getMemberByID(@PathVariable("id") Long id){
 		try {
 			MemberModel member = new MemberModel();
@@ -93,7 +101,10 @@ public class PostgresDemoController {
 	
 	//-------------------------------TEAM SECTION---------------------------------
 	//Save Team
-	@RequestMapping(path = "/team/new/add", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(path = "/team/new/add", 
+			method = RequestMethod.POST, 
+			produces = MediaType.APPLICATION_JSON_VALUE, 
+			consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> saveTeam(@RequestBody RequestTeamModel reqTeam) {
 		ResponseMessage response = new ResponseMessage();
 		try {
@@ -112,9 +123,11 @@ public class PostgresDemoController {
 			return new ResponseEntity<ResponseMessage>(response, HttpStatus.CONFLICT);
 		}
 	}
-	
 	//Get Team Members
-	@RequestMapping(path = "/team/{id}/members", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(path = "/team/{id}/members", 
+			method = RequestMethod.GET, 
+			produces = MediaType.APPLICATION_JSON_VALUE, 
+			consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getTeamMembers(@PathVariable("id") Long id){
 		try {
 			List<MemberModel> memberTeam = memberService.findByTeamID(id);
@@ -129,7 +142,10 @@ public class PostgresDemoController {
 	
 	//------------------------------SETLIST SECTION-------------------------------
 	//Get All Setlist
-	@RequestMapping(path = "/setlist/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(path = "/setlist/all", 
+			method = RequestMethod.GET, 
+			produces = MediaType.APPLICATION_JSON_VALUE, 
+			consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getAllSetlist(){
 		try {
 			List<SetlistModel> setlists = setlistService.findAll();
@@ -141,9 +157,11 @@ public class PostgresDemoController {
 			return new ResponseEntity<ResponseMessage>(response, HttpStatus.CONFLICT);
 		}
 	}
-	
 	//Save new Setlist
-	@RequestMapping(path = "/setlist/new/add", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(path = "/setlist/new/add", 
+			method = RequestMethod.POST, 
+			produces = MediaType.APPLICATION_JSON_VALUE, 
+			consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> saveNewSetlist(@RequestBody RequestSetlistModel s){
 		ResponseMessage response = new ResponseMessage();
 		try {
@@ -162,9 +180,11 @@ public class PostgresDemoController {
 			return new ResponseEntity<ResponseMessage>(response, HttpStatus.CONFLICT);
 		}
 	}
-	
 	//Get Specific Setlist
-	@RequestMapping(path = "/setlist/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(path = "/setlist/{id}", 
+			method = RequestMethod.GET, 
+			produces = MediaType.APPLICATION_JSON_VALUE, 
+			consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getSetlist(@PathVariable("id") Long id){
 		try {
 			SetlistModel setlists = setlistService.findById(id);
