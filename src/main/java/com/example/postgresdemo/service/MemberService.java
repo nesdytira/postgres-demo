@@ -32,4 +32,9 @@ public class MemberService {
 	public List<MemberModel> findAllMember() throws Exception {
 		return memberDao.findAll();		
 	}
+	
+	public void deleteMember(Long id) throws Exception {
+		MemberModel m = this.findById(id);
+		memberDao.delete(m);
+	}
 }

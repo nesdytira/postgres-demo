@@ -1,5 +1,6 @@
 package com.example.postgresdemo.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +14,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.postgresdemo.model.MemberModel;
+import com.example.postgresdemo.model.SetlistModel;
 import com.example.postgresdemo.model.TeamModel;
 import com.example.postgresdemo.request.RequestMemberModel;
+import com.example.postgresdemo.request.RequestSetlistModel;
 import com.example.postgresdemo.request.RequestTeamModel;
 import com.example.postgresdemo.response.ResponseMessage;
 import com.example.postgresdemo.service.MemberService;
+import com.example.postgresdemo.service.SetlistService;
 import com.example.postgresdemo.service.TeamService;
 
 @RestController
@@ -28,6 +32,9 @@ public class PostgresDemoController {
 	
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private SetlistService setlistService;
 	
 	//------------------------------MEMBER SECTION-------------------------------
 	//Save Member
@@ -116,6 +123,56 @@ public class PostgresDemoController {
 			ResponseMessage response = new ResponseMessage();
 			e.getMessage();
 			response.setMessage("Getting Team Member Failed!");
+			return new ResponseEntity<ResponseMessage>(response, HttpStatus.CONFLICT);
+		}
+	}
+	
+	//------------------------------SETLIST SECTION-------------------------------
+	//Get All Setlist
+	@RequestMapping(path = "/setlist/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getAllSetlist(){
+		try {
+			List<SetlistModel> setlists = setlistService.findAll();
+			return new ResponseEntity<List<SetlistModel>>(setlists, HttpStatus.OK);
+		} catch(Exception e) {
+			ResponseMessage response = new ResponseMessage();
+			e.getMessage();
+			response.setMessage("Getting All Setlist Failed!");
+			return new ResponseEntity<ResponseMessage>(response, HttpStatus.CONFLICT);
+		}
+	}
+	
+	//Save new Setlist
+	@RequestMapping(path = "/setlist/new/add", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> saveNewSetlist(@RequestBody RequestSetlistModel s){
+		ResponseMessage response = new ResponseMessage();
+		try {
+			SetlistModel setlist = new SetlistModel();
+			setlist.setSetlistTitle(s.getSetlistTitle());
+			
+			Date today = new Date();
+			setlist.setDateAdd(today);
+			setlistService.save(setlist);
+			response.setMessage("Saving new Setlist Success!");
+			return new ResponseEntity<ResponseMessage>(response, HttpStatus.OK);
+			//return new ResponseEntity<Date>(today, HttpStatus.OK);
+		}catch(Exception e) {
+			e.getMessage();
+			response.setMessage("Save new Setlist Failed!");
+			return new ResponseEntity<ResponseMessage>(response, HttpStatus.CONFLICT);
+		}
+	}
+	
+	//Get Specific Setlist
+	@RequestMapping(path = "/setlist/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getSetlist(@PathVariable("id") Long id){
+		try {
+			SetlistModel setlists = setlistService.findById(id);
+			return new ResponseEntity<SetlistModel>(setlists, HttpStatus.OK);
+		} catch(Exception e) {
+			ResponseMessage response = new ResponseMessage();
+			e.getMessage();
+			response.setMessage("Getting Setlist Failed!");
 			return new ResponseEntity<ResponseMessage>(response, HttpStatus.CONFLICT);
 		}
 	}

@@ -21,4 +21,10 @@ public class TeamService {
 	public TeamModel findById(Long id) throws Exception {
 		return teamDao.findById(id).get();
 	}
+	
+	//Delete Team
+	public void deleteTeam(Long id) throws Exception{
+		TeamModel t = this.findById(id);
+		teamDao.delete(t);
+	}
 }
