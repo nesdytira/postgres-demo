@@ -47,4 +47,7 @@ public class PerformMemberService {
 		return performMemberDao.save(p);
 	}
 	
+	public void deletePerformMember(Long id) {
+		performMemberDao.deleteById(id);
+	}
 }

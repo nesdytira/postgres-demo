@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.postgresdemo.model.MemberModel;
 import com.example.postgresdemo.model.SetlistModel;
 import com.example.postgresdemo.model.TeamModel;
+import com.example.postgresdemo.request.RequestMemberId;
+import com.example.postgresdemo.request.RequestPerformMemberId;
 import com.example.postgresdemo.request.RequestPerformedSetlistNew;
 import com.example.postgresdemo.request.RequestScheduleTeatherNew;
 import com.example.postgresdemo.response.ResponseMessage;
@@ -25,6 +27,7 @@ import com.example.postgresdemo.service.PerformedSetlistService;
 import com.example.postgresdemo.service.ScheduleTeatherService;
 import com.example.postgresdemo.service.SetlistService;
 import com.example.postgresdemo.service.TeamService;
+import com.example.postgresdemo.transaction.PerformMember;
 import com.example.postgresdemo.transaction.PerformedSetlist;
 import com.example.postgresdemo.transaction.ScheduleTeather;
 
@@ -153,6 +156,67 @@ public class TransactionController {
 			return new ResponseEntity<ScheduleTeather>(sch, HttpStatus.CONFLICT);
 		} catch(Exception e) {
 			ResponseMessage response = new ResponseMessage();
+			e.getMessage();
+			response.setMessage("Save Schedule Failed!");
+			return new ResponseEntity<ResponseMessage>(response, HttpStatus.CONFLICT);
+		}
+	}
+	
+	//-----------------------------------NEW PERFORM MEMBER----------------------------------------
+	//ADD MEMBER TO PERFORM
+	@RequestMapping(path = "/schedule/teather/{id}/add-member", 
+			method = RequestMethod.POST, 
+			produces = MediaType.APPLICATION_JSON_VALUE, 
+			consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> addPerformMember(@PathVariable("id") Long scheduleId, @RequestBody List<RequestMemberId> members){
+		ResponseMessage response = new ResponseMessage();
+		try {			
+			members.forEach(m -> {
+				try {
+					ScheduleTeather sch = new ScheduleTeather();
+					sch = scheduleTeatherService.getByID(scheduleId);
+					
+					MemberModel member = new MemberModel();
+					member = memberService.findById(m.getMemberId());
+					
+					PerformMember p = new PerformMember();
+					p.setScheduleTeather(sch);
+					p.setMember(member);
+					performMemberService.save(p);
+					
+					response.setMessage("Save Perform Member Success!");
+				} catch (Exception e) {
+					response.setMessage(e.getMessage());
+					return;
+				}
+			});
+			return new ResponseEntity<ResponseMessage>(response, HttpStatus.OK);
+		} catch(Exception e) {
+			e.getMessage();
+			response.setMessage("Save Schedule Failed!");
+			return new ResponseEntity<ResponseMessage>(response, HttpStatus.CONFLICT);
+		}
+	}
+	//DELETE PERFORM MEMBER
+	@RequestMapping(path = "/schedule/teather/{id}/delete-member", 
+			method = RequestMethod.POST, 
+			produces = MediaType.APPLICATION_JSON_VALUE, 
+			consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> deletePerformMember(@PathVariable("id") Long scheduleId, @RequestBody List<RequestPerformMemberId> members){
+		ResponseMessage response = new ResponseMessage();
+		try {			
+			members.forEach(performMemberId -> {
+				try {
+					performMemberService.deletePerformMember(performMemberId.getPerformMemberId());
+					
+					response.setMessage("Delete Perform Member Success!");
+				} catch (Exception e) {
+					response.setMessage(e.getMessage());
+					return;
+				}
+			});
+			return new ResponseEntity<ResponseMessage>(response, HttpStatus.OK);
+		} catch(Exception e) {
 			e.getMessage();
 			response.setMessage("Save Schedule Failed!");
 			return new ResponseEntity<ResponseMessage>(response, HttpStatus.CONFLICT);

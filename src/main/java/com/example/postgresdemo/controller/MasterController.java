@@ -25,7 +25,7 @@ import com.example.postgresdemo.service.SetlistService;
 import com.example.postgresdemo.service.TeamService;
 
 @RestController
-public class PostgresDemoController {
+public class MasterController {
 	
 	@Autowired
 	private TeamService teamService;
@@ -36,7 +36,7 @@ public class PostgresDemoController {
 	@Autowired
 	private SetlistService setlistService;
 	
-	//------------------------------MEMBER SECTION-------------------------------
+	//------------------------------MEMBER SECTION--------------------------------
 	//Save Member
 	@RequestMapping(path = "/member/new/add", 
 			method = RequestMethod.POST, 
@@ -198,6 +198,5 @@ public class PostgresDemoController {
 	}
 	
 	//------------------------------------ETC-------------------------------------
-	//Get Team Members
 	
 }
