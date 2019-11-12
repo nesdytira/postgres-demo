@@ -1,5 +1,7 @@
 package com.example.postgresdemo.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,5 +20,9 @@ public class ScheduleTeatherService {
 	
 	public ScheduleTeather getByID(Long id) throws Exception {
 		return sch.findById(id).get();
+	}
+	
+	public List<ScheduleTeather> findAll() throws Exception{
+		return sch.findAll();
 	}
 }

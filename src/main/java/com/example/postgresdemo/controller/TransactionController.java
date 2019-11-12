@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.postgresdemo.dbview.model.ViewPerformMember;
+import com.example.postgresdemo.dbview.repository.ViewPerformMemberRepository;
 import com.example.postgresdemo.model.MemberModel;
 import com.example.postgresdemo.model.SetlistModel;
 import com.example.postgresdemo.model.TeamModel;
@@ -51,6 +53,9 @@ public class TransactionController {
 	
 	@Autowired
 	private SetlistService setlistService;
+	
+	@Autowired
+	private ViewPerformMemberRepository viewPerformMemberRepository;
 	
 	//------------------------------------NEW PERFORMANCE------------------------------------------
 	@RequestMapping(path = "/setlist/performed/new/add", 
@@ -157,7 +162,23 @@ public class TransactionController {
 		} catch(Exception e) {
 			ResponseMessage response = new ResponseMessage();
 			e.getMessage();
-			response.setMessage("Save Schedule Failed!");
+			response.setMessage("Get Schedule Failed!");
+			return new ResponseEntity<ResponseMessage>(response, HttpStatus.CONFLICT);
+		}
+	}
+	//Get All Schedule
+	@RequestMapping(path = "/schedule/teather/all", 
+			method = RequestMethod.GET, 
+			produces = MediaType.APPLICATION_JSON_VALUE, 
+			consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getAllSchedule(){
+		try {
+			List<ScheduleTeather> schs = scheduleTeatherService.findAll();
+			return new ResponseEntity<List<ScheduleTeather>>(schs, HttpStatus.OK);
+		}catch(Exception e) {
+			ResponseMessage response = new ResponseMessage();
+			e.getMessage();
+			response.setMessage("Get Schedule Failed!");
 			return new ResponseEntity<ResponseMessage>(response, HttpStatus.CONFLICT);
 		}
 	}
@@ -219,6 +240,24 @@ public class TransactionController {
 		} catch(Exception e) {
 			e.getMessage();
 			response.setMessage("Save Schedule Failed!");
+			return new ResponseEntity<ResponseMessage>(response, HttpStatus.CONFLICT);
+		}
+	}
+	//GET PERFORMED MEMBER BY SCHEDULE
+	@RequestMapping(path = "/schedule/teather/{id}/member", 
+			method = RequestMethod.GET, 
+			produces = MediaType.APPLICATION_JSON_VALUE, 
+			consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getPerformMember(@PathVariable("id") Long scheduleId){
+		try {
+			ScheduleTeather sch = scheduleTeatherService.getByID(scheduleId);
+			List<PerformMember> perf = performMemberService.findBySchedule(sch);
+			return new ResponseEntity<List<PerformMember>>(perf, HttpStatus.OK);
+			/*List<ViewPerformMember> vpm = viewPerformMemberRepository.getByScheduleTeatherId(scheduleId);
+			return new ResponseEntity<List<ViewPerformMember>>(vpm, HttpStatus.OK);*/
+		} catch(Exception e) {
+			ResponseMessage response = new ResponseMessage();
+			response.setMessage(e.getMessage());
 			return new ResponseEntity<ResponseMessage>(response, HttpStatus.CONFLICT);
 		}
 	}

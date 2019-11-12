@@ -22,9 +22,9 @@ public class PerformMemberService {
 		return performMemberDao.save(p);
 	}
 	
-	/*public List<PerformMember> findByScheduleID(Long id){
-		return performMemberDao.findByScheduleTeatherID(id);
-	}*/
+	public List<PerformMember> findBySchedule(ScheduleTeather sch){
+		return performMemberDao.findByScheduleTeather(sch);
+	}
 	
 	public Long getTeamBySchedule(ScheduleTeather sch) {
 		
